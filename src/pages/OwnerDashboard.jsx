@@ -16,6 +16,58 @@ const StatCard = ({ iconClass, icon, title, number, change, changeClass }) => (
 );
 
 const OwnerDashboard = () => {
+  
+  const handleCommissionPayment = (e) => {
+    e.preventDefault();
+    // --- BACKEND API CALL PLACEHOLDER ---
+    console.log("Initiating payment for listing commission...");
+    alert("Payment gateway simulation: Redirecting to complete ₹500 listing fee. On success, the listing status will change to Active.");
+    // In a real application, this would trigger a payment gateway redirect/modal
+  };
+
+  const CommissionSection = (
+    <div className="section-card commission-card">
+      <div className="section-header">
+        <h2>Pending Listing Commission</h2>
+      </div>
+
+      <div className="bookings-list">
+        <div className="booking-item">
+          <div className="booking-user">
+            <div className="user-avatar" style={{background: 'var(--accent)'}}>💰</div>
+            <div>
+              <strong>Pending Fee: Sunshine Boys Hostel</strong>
+              <p>One-time listing commission required to activate the property.</p>
+            </div>
+          </div>
+          <div className="booking-date">
+            <p>Commission: <span style={{fontWeight: 700, color: 'var(--accent)'}}>₹500</span></p>
+            <span className="time negative">Required Action</span>
+          </div>
+          <div className="booking-actions">
+            <button className="btn-small accept" onClick={handleCommissionPayment} style={{backgroundColor: 'var(--accent)'}}>Pay Now</button>
+          </div>
+        </div>
+        <div className="booking-item">
+          <div className="booking-user">
+            <div className="user-avatar" style={{background: 'var(--success)'}}>✓</div>
+            <div>
+              <strong>Payment Complete: Rose Girls PG</strong>
+              <p>Listing commission paid and active.</p>
+            </div>
+          </div>
+          <div className="booking-date">
+            <p>Date: 01 Nov 2024</p>
+            <span className="time positive">Paid</span>
+          </div>
+          <div className="booking-actions">
+            <button className="btn-small accept" disabled style={{backgroundColor: 'var(--success)', opacity: 0.6}}>View Receipt</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <>
       {/* Use Navbar with isDashboard prop set to true */}
@@ -45,9 +97,10 @@ const OwnerDashboard = () => {
               <span className="icon">📋</span>
               <span>Bookings</span>
             </Link>
-            <Link to="#" className="nav-item">
+            {/* New Chat Link */}
+            <Link to="/chat.html" className="nav-item">
               <span className="icon">💬</span>
-              <span>Messages</span>
+              <span>Customer Chat</span>
             </Link>
             <Link to="#" className="nav-item">
               <span className="icon">⚙️</span>
@@ -77,6 +130,8 @@ const OwnerDashboard = () => {
             <StatCard iconClass="orange" icon="💰" title="Monthly Revenue" number="₹1,95,500" change="+12% from last month" changeClass="positive" />
             <StatCard iconClass="purple" icon="👁️" title="Total Views" number="1,247" change="This month" changeClass="neutral" />
           </div>
+
+          {CommissionSection} {/* Display the new Commission Section */}
 
           {/* My PGs Section */}
           <div className="section-card">
@@ -169,13 +224,13 @@ const OwnerDashboard = () => {
             </div>
           </div>
 
-          {/* Add New PG Form */}
+          {/* Add New PG Form - Modified with commission notice */}
           <div className="section-card">
             <div className="section-header">
               <h2>Add New PG Listing</h2>
             </div>
 
-            <form className="pg-form">
+            <form className="pg-form" onSubmit={(e) => e.preventDefault()}>
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="pg-name">PG Name *</label>
@@ -264,6 +319,9 @@ const OwnerDashboard = () => {
               <div className="form-group">
                 <label htmlFor="description">Description *</label>
                 <textarea id="description" rows="5" placeholder="Describe your PG, facilities, rules, etc." required></textarea>
+                <small style={{color: 'var(--accent)', fontWeight: 600}}>
+                    Note: A one-time listing commission of ₹500 is required upon submission to make the listing live.
+                </small>
               </div>
 
               <div className="form-group">
@@ -274,7 +332,9 @@ const OwnerDashboard = () => {
 
               <div className="form-actions">
                 <button type="button" className="btn-secondary">Cancel</button>
-                <button type="submit" className="btn-primary">Publish PG Listing</button>
+                <button type="submit" className="btn-primary" onClick={handleCommissionPayment}>
+                    Publish & Pay Commission
+                </button>
               </div>
             </form>
           </div>

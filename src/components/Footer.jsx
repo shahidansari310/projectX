@@ -41,7 +41,7 @@ const Footer = ({ hasCreatorInfo = true }) => {
         </div>
         <div className="footer-bottom">
           <p>&copy; {new Date().getFullYear()} PGFinder. All rights reserved.</p>
-          {hasCreatorInfo && <p>By Shahid, Shikhar and Shorya</p>}
+          {hasCreatorInfo && <p>By Shahid</p>}
         </div>
       </div>
     </footer>

@@ -403,6 +403,9 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none; /* Added for Chat link */
+    display: block; /* Added for Chat link */
+    text-align: center; /* Added for Chat link */
 }
 
 .btn-contact:hover {
@@ -465,6 +468,36 @@
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
 }
+
+/* --- NEW RATING FORM STYLES --- */
+.rating-form {
+    padding-top: 1rem;
+}
+
+.star-rating-input {
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--border); /* Default star color */
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.star-rating-input .star {
+    transition: color 0.2s;
+    line-height: 1; /* Fix vertical alignment of star icons */
+}
+
+.star-rating-input .star.filled {
+    color: #FFB300; /* Warning color for filled stars */
+}
+
+.rating-form textarea {
+    width: 100%;
+    /* Reusing base styles from style.css */
+}
+/* --- END NEW RATING FORM STYLES --- */
+
 
 /* Responsive Design */
 @media (max-width: 1024px) {

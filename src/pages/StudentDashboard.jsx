@@ -41,6 +41,16 @@ const StudentDashboard = () => {
                             <span className="icon">📋</span>
                             <span>My Bookings</span>
                         </Link>
+                        {/* New Chat Link */}
+                        <Link to="/chat.html" className="nav-item">
+                            <span className="icon">💬</span>
+                            <span>My Chats</span>
+                        </Link>
+                         {/* New Complaint Link */}
+                        <Link to="/complaint-box.html" className="nav-item">
+                            <span className="icon">🚨</span>
+                            <span>File Complaint</span>
+                        </Link>
                         <Link to="#" className="nav-item">
                             <span className="icon">⚙️</span>
                             <span>Profile Settings</span>

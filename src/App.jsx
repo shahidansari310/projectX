@@ -7,6 +7,8 @@ import Login from './pages/Login';
 import OwnerDashboard from './pages/OwnerDashboard';
 import StudentDashboard from './pages/StudentDashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import ComplaintBox from './pages/ComplaintBox'; // New Import
+import Chat from './pages/Chat'; // New Import
 import ScrollToTop from './components/ScrollToTop';
 
 function App() {
@@ -19,6 +21,10 @@ function App() {
         <Route path="/pgs.html" element={<Listings />} />
         <Route path="/pg-details.html" element={<PGDetails />} />
         <Route path="/login.html" element={<Login />} />
+        
+        {/* New Feature Routes */}
+        <Route path="/complaint-box.html" element={<ComplaintBox />} /> 
+        <Route path="/chat.html" element={<Chat />} />
         
         {/* Dashboard Routes (Protected in a real app) */}
         <Route path="/owner-dashboard.html" element={<OwnerDashboard />} />

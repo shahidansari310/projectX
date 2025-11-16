@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
-import PGCard from '../components/PGCard';
+import PGCard from '../components/PGCard'; // PGCard is defined in a separate file, assuming standard usage.
 import '../assets/css/details.css';
 
 const similarPGs = [
@@ -12,6 +12,46 @@ const similarPGs = [
 ];
 
 const PGDetails = () => {
+  // Simulate PG data fetch with new rating structure
+  const pgData = {
+    name: 'Sunshine Boys Hostel',
+    rating: 4.8, // New: Average Rating
+    reviews: 124, // New: Total Reviews
+    // ... other existing properties
+  };
+    
+  const [newRating, setNewRating] = useState(0);
+  const [reviewText, setReviewText] = useState('');
+
+  const handleRatingSubmit = (e) => {
+    e.preventDefault();
+    if (newRating === 0) {
+        alert('Please select a star rating.');
+        return;
+    }
+    // --- BACKEND API CALL PLACEHOLDER ---
+    console.log(`Submitting rating ${newRating} with review: ${reviewText} for ${pgData.name}`);
+    // fetch('/api/pgs/123/rate', { method: 'POST', body: JSON.stringify({ rating: newRating, review: reviewText }) });
+    alert('Review submitted! Awaiting backend API integration.');
+    setNewRating(0);
+    setReviewText('');
+  };
+
+  // Helper to render stars
+  const renderStars = (rating) => {
+    const fullStar = '★';
+    const emptyStar = '☆';
+    const fullStars = Math.floor(rating);
+    const hasHalf = rating % 1 !== 0;
+    let stars = fullStar.repeat(fullStars);
+    if (hasHalf) {
+        stars += '½';
+    }
+    const emptyStars = 5 - Math.ceil(rating);
+    stars += emptyStar.repeat(emptyStars);
+    return stars;
+  }
+
   return (
     <>
       <Navbar />
@@ -56,14 +96,14 @@ const PGDetails = () => {
                 </div>
               </div>
 
-              {/* Basic Info */}
+              {/* Basic Info (Updated to use pgData.rating) */}
               <div className="info-section">
-                <h1>Sunshine Boys Hostel</h1>
+                <h1>{pgData.name}</h1>
                 <div className="location-rating">
                   <p className="location">📍 Koramangala 5th Block, Bangalore - 560095</p>
                   <div className="rating">
-                    <span className="stars">⭐⭐⭐⭐⭐</span>
-                    <span className="rating-text">4.8 (124 reviews)</span>
+                    <span className="stars">{renderStars(pgData.rating)}</span>
+                    <span className="rating-text">{pgData.rating} ({pgData.reviews} reviews)</span>
                   </div>
                 </div>
 
@@ -99,7 +139,7 @@ const PGDetails = () => {
                 </div>
               </div>
 
-              {/* Description */}
+              {/* ... (Other existing sections: Description, Amenities, Pricing, Rules, Location) */}
               <div className="info-section">
                 <h2>About This PG</h2>
                 <p className="description">
@@ -110,7 +150,6 @@ const PGDetails = () => {
                 </p>
               </div>
 
-              {/* Amenities */}
               <div className="info-section">
                 <h2>Amenities & Services</h2>
                 <div className="amenities-grid">
@@ -129,7 +168,6 @@ const PGDetails = () => {
                 </div>
               </div>
 
-              {/* Room Pricing */}
               <div className="info-section">
                 <h2>Room Types & Pricing</h2>
                 <div className="pricing-grid">
@@ -165,7 +203,6 @@ const PGDetails = () => {
                 </div>
               </div>
 
-              {/* House Rules */}
               <div className="info-section">
                 <h2>House Rules</h2>
                 <ul className="rules-list">
@@ -179,7 +216,6 @@ const PGDetails = () => {
                 </ul>
               </div>
 
-              {/* Location */}
               <div className="info-section">
                 <h2>Location & Nearby</h2>
                 <div className="nearby-places">
@@ -201,9 +237,45 @@ const PGDetails = () => {
                   </div>
                 </div>
               </div>
+
+
+              {/* --- NEW: Rating Submission Box --- */}
+              <div className="info-section">
+                <h2>Leave a Review and Rating</h2>
+                <form onSubmit={handleRatingSubmit} className="rating-form">
+                  <div className="form-group mb-3">
+                    <label htmlFor="rating">Your Rating:</label>
+                    <div className="star-rating-input">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <span 
+                          key={star} 
+                          className={`star ${star <= newRating ? 'filled' : ''}`}
+                          onClick={() => setNewRating(star)}
+                        >
+                          {star <= newRating ? '★' : '☆'}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="form-group mb-3">
+                    <label htmlFor="review-text">Your Review (Optional):</label>
+                    <textarea 
+                      id="review-text" 
+                      rows="3" 
+                      placeholder="Share your experience here..."
+                      value={reviewText}
+                      onChange={(e) => setReviewText(e.target.value)}
+                    ></textarea>
+                  </div>
+                  <button type="submit" className="btn-primary" disabled={newRating === 0}>
+                    Submit Rating
+                  </button>
+                </form>
+              </div>
+              {/* --- END NEW: Rating Submission Box --- */}
             </div>
 
-            {/* Sidebar */}
+            {/* Sidebar (existing) */}
             <aside className="details-sidebar">
               {/* Booking Card */}
               <div className="booking-card">
@@ -227,7 +299,10 @@ const PGDetails = () => {
                       <p>Property Owner</p>
                     </div>
                   </div>
-                  <button className="btn-contact">📞 Show Phone Number</button>
+                  <Link to="/chat.html" className="btn-contact" style={{backgroundColor: '#00C853'}}>
+                    💬 Chat Now
+                  </Link>
+                  <button className="btn-contact" style={{marginTop: '0.5rem'}}>📞 Show Phone Number</button>
                 </div>
               </div>
 
