@@ -62,7 +62,8 @@ const AdminDashboard = () => {
                             <span className="icon">⚙️</span>
                             <span>System Settings</span>
                         </Link>
-                        <Link to="/login.html" className="nav-item logout">
+                        {/* Link Fix */}
+                        <Link to="/login" className="nav-item logout">
                             <span className="icon">🚪</span>
                             <span>Logout</span>
                         </Link>

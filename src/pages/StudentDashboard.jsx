@@ -41,13 +41,13 @@ const StudentDashboard = () => {
                             <span className="icon">📋</span>
                             <span>My Bookings</span>
                         </Link>
-                        {/* New Chat Link */}
-                        <Link to="/chat.html" className="nav-item">
+                        {/* Link Fix */}
+                        <Link to="/chat" className="nav-item">
                             <span className="icon">💬</span>
                             <span>My Chats</span>
                         </Link>
-                         {/* New Complaint Link */}
-                        <Link to="/complaint-box.html" className="nav-item">
+                         {/* Link Fix */}
+                        <Link to="/complaint-box" className="nav-item">
                             <span className="icon">🚨</span>
                             <span>File Complaint</span>
                         </Link>
@@ -55,7 +55,8 @@ const StudentDashboard = () => {
                             <span className="icon">⚙️</span>
                             <span>Profile Settings</span>
                         </Link>
-                        <Link to="/login.html" className="nav-item logout">
+                        {/* Link Fix */}
+                        <Link to="/login" className="nav-item logout">
                             <span className="icon">🚪</span>
                             <span>Logout</span>
                         </Link>
@@ -69,7 +70,8 @@ const StudentDashboard = () => {
                             <h1>Dashboard</h1>
                             <p>Welcome back, {userName}! Find your next stay or check your status.</p>
                         </div>
-                        <Link to="/pgs.html" className="btn-primary">
+                        {/* Link Fix */}
+                        <Link to="/pgs" className="btn-primary">
                             🏠 Browse PGs
                         </Link>
                     </div>
@@ -180,7 +182,8 @@ const StudentDashboard = () => {
                                             </td>
                                             <td>
                                                 <div className="action-buttons">
-                                                    <Link to="/pg-details.html" className="action-btn view">👁️</Link>
+                                                    {/* Link Fix */}
+                                                    <Link to="/pg-details" className="action-btn view">👁️</Link>
                                                     <button className="action-btn delete">🗑️</button>
                                                 </div>
                                             </td>

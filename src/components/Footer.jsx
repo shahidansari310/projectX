@@ -14,8 +14,8 @@ const Footer = ({ hasCreatorInfo = true }) => {
           <div className="footer-col">
             <h3>Quick Links</h3>
             <ul>
-              <li><Link to="/pgs.html">Browse PGs</Link></li>
-              <li><Link to="/login.html">List Your PG</Link></li>
+              <li><Link to="/pgs">Browse PGs</Link></li>
+              <li><Link to="/login">List Your PG</Link></li>
               <li><Link to="#">About Us</Link></li>
               {hasCreatorInfo && <li><Link to="#">Contact</Link></li>}
             </ul>
@@ -23,10 +23,10 @@ const Footer = ({ hasCreatorInfo = true }) => {
           <div className="footer-col">
             <h3>Popular Cities</h3>
             <ul>
-              <li><Link to="/pgs.html">Bangalore</Link></li>
-              <li><Link to="/pgs.html">Mumbai</Link></li>
-              <li><Link to="/pgs.html">Delhi</Link></li>
-              {hasCreatorInfo && <li><Link to="/pgs.html">Pune</Link></li>}
+              <li><Link to="/pgs">Bangalore</Link></li>
+              <li><Link to="/pgs">Mumbai</Link></li>
+              <li><Link to="/pgs">Delhi</Link></li>
+              {hasCreatorInfo && <li><Link to="/pgs">Pune</Link></li>}
             </ul>
           </div>
           <div className="footer-col">

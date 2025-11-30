@@ -44,7 +44,7 @@ const Navbar = ({ isDashboard = false, userName = 'User' }) => {
           <div className="logo">
             <Link to="/">
               <span className="logo-icon">🏠</span>
-              <span className="logo-text">PG<span className="highlight">Finder</span></span>
+              <span className="logo-text">PG<span className="highlight">Mate</span></span>
             </Link>
           </div>
           <ul className="nav-links">

@@ -29,7 +29,7 @@ const PGDetails = () => {
         alert('Please select a star rating.');
         return;
     }
-    // --- BACKEND API CALL PLACEHOLDER ---
+    // --- BACKEND API CALL PLACEHOLDER (Use Firestore for real review submission) ---
     console.log(`Submitting rating ${newRating} with review: ${reviewText} for ${pgData.name}`);
     // fetch('/api/pgs/123/rate', { method: 'POST', body: JSON.stringify({ rating: newRating, review: reviewText }) });
     alert('Review submitted! Awaiting backend API integration.');
@@ -41,14 +41,16 @@ const PGDetails = () => {
   const renderStars = (rating) => {
     const fullStar = '★';
     const emptyStar = '☆';
-    const fullStars = Math.floor(rating);
+    const floorRating = Math.floor(rating);
     const hasHalf = rating % 1 !== 0;
-    let stars = fullStar.repeat(fullStars);
+    
+    let stars = fullStar.repeat(floorRating);
     if (hasHalf) {
         stars += '½';
     }
     const emptyStars = 5 - Math.ceil(rating);
     stars += emptyStar.repeat(emptyStars);
+    
     return stars;
   }
 
@@ -56,11 +58,11 @@ const PGDetails = () => {
     <>
       <Navbar />
 
-      {/* Breadcrumb */}
+      {/* Breadcrumb - .html removed */}
       <div className="breadcrumb">
         <div className="container">
           <Link to="/">Home</Link> / 
-          <Link to="/pgs.html">All PGs</Link> / 
+          <Link to="/pgs">All PGs</Link> / 
           <span>Sunshine Boys Hostel</span>
         </div>
       </div>
@@ -299,7 +301,8 @@ const PGDetails = () => {
                       <p>Property Owner</p>
                     </div>
                   </div>
-                  <Link to="/chat.html" className="btn-contact" style={{backgroundColor: '#00C853'}}>
+                  {/* Link Fix */}
+                  <Link to="/chat" className="btn-contact" style={{backgroundColor: '#00C853'}}>
                     💬 Chat Now
                   </Link>
                   <button className="btn-contact" style={{marginTop: '0.5rem'}}>📞 Show Phone Number</button>
@@ -350,7 +353,8 @@ const PGDetails = () => {
                             <span className="amount">₹{pg.price.toLocaleString()}</span>
                             <span className="period">/month</span>
                         </div>
-                        <Link to="/pg-details.html" className="btn-view">View</Link>
+                        {/* Link Fix */}
+                        <Link to="/pg-details" className="btn-view">View</Link>
                     </div>
                 </div>
               </div>

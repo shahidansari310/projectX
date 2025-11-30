@@ -62,7 +62,7 @@ const Home = () => {
         <div className="container">
           <div className="section-header">
             <h2>Featured PGs</h2>
-            <Link to="/pgs.html" className="view-all">View All →</Link>
+            <Link to="/pgs" className="view-all">View All →</Link>
           </div>
           
           <div className="pg-grid">

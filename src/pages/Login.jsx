@@ -1,56 +1,95 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // <-- useNavigate for redirect
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import '../assets/css/login.css';
+// --- START FIREBASE IMPORTS ---
+import { auth } from '../firebase'; 
+import { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword 
+} from 'firebase/auth';
+// --- END FIREBASE IMPORTS ---
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [role, setRole] = useState('student'); // 'student' or 'owner'
-  const navigate = useNavigate(); // Hook for navigation
+  const [role, setRole] = useState('student');
+  const [email, setEmail] = useState(''); 
+  const [password, setPassword] = useState(''); 
+  const [confirmPassword, setConfirmPassword] = useState(''); 
+  const [error, setError] = useState(null); 
+  const [isLoading, setIsLoading] = useState(false); 
+  const navigate = useNavigate();
 
   const handleToggleForm = (e) => {
     e.preventDefault();
     setIsLogin(prev => !prev);
+    setError(null); 
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
   };
 
   const handleRoleChange = (newRole) => {
     setRole(newRole);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // --- SIMULATED LOGIN REDIRECT LOGIC ---
-    if (isLogin) {
-      if (role === 'student') {
-        // Redirect student to student dashboard
-        navigate('/student-dashboard.html'); 
-      } else if (role === 'owner') {
-        // Redirect owner to owner dashboard
-        navigate('/owner-dashboard.html');
-      } else if (role === 'admin') {
-        // Assume 'admin' role is a secret login for now
-        navigate('/admin-dashboard.html');
-      } else {
-        // Fallback for co-living or other roles
-        navigate('/student-dashboard.html');
-      }
-    } else {
-        // Simplified: After successful signup, redirect to student dashboard by default
-        console.log("Signup successful. Redirecting to dashboard.");
-        navigate('/student-dashboard.html');
+    setError(null);
+    setIsLoading(true);
+
+    if (!isLogin && password !== confirmPassword) {
+      setError("Passwords do not match.");
+      setIsLoading(false);
+      return;
     }
-    // --------------------------------------
+    
+    try {
+      if (isLogin) {
+        // Firebase Login
+        await signInWithEmailAndPassword(auth, email, password);
+      } else {
+        // Firebase Signup
+        await createUserWithEmailAndPassword(auth, email, password);
+        // OPTIONAL: Save user role/details to Firestore here
+      }
+
+      // FIXED: Redirect paths to remove .html
+      let redirectPath = '/student-dashboard';
+      if (role === 'owner') {
+        redirectPath = '/owner-dashboard';
+      } else if (role === 'admin') {
+        redirectPath = '/admin-dashboard';
+      }
+      navigate(redirectPath);
+
+    } catch (err) {
+      console.error("Authentication Error:", err.code, err.message);
+      let message = "An unexpected error occurred. Please try again.";
+      if (err.code && err.code.includes("auth/")) {
+         // Basic error cleanup for display
+        message = err.message.replace("Firebase: ", "").replace(/\(auth-.*\)/, "").trim();
+      }
+      setError(message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const LoginForm = (
     <form className={`login-form ${!isLogin ? 'hidden' : ''}`} id="loginForm" onSubmit={handleSubmit}>
+      {/* ERROR MESSAGE DISPLAY */}
+      {error && <p style={{ color: '#ff4444', textAlign: 'center' }}>{error}</p>}
+      
       <div className="form-group">
         <label htmlFor="email">Email Address</label>
         <input 
           type="email" 
           id="email" 
           placeholder="Enter your email"
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)} 
           required
         />
       </div>
@@ -61,6 +100,8 @@ const Login = () => {
           type="password" 
           id="password" 
           placeholder="Enter your password"
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)} 
           required
         />
       </div>
@@ -73,7 +114,9 @@ const Login = () => {
         <Link to="#" className="forgot-link">Forgot Password?</Link>
       </div>
 
-      <button type="submit" className="btn-submit">Sign In</button>
+      <button type="submit" className="btn-submit" disabled={isLoading}>
+        {isLoading ? 'Signing In...' : 'Sign In'}
+      </button>
 
       <div className="divider"><span>OR</span></div>
 
@@ -95,6 +138,9 @@ const Login = () => {
 
   const SignupForm = (
     <form className={`login-form ${isLogin ? 'hidden' : ''}`} id="signupForm" onSubmit={handleSubmit}>
+       {/* ERROR MESSAGE DISPLAY */}
+      {error && <p style={{ color: '#ff4444', textAlign: 'center' }}>{error}</p>}
+
       <div className="form-group">
         <label htmlFor="fullname">Full Name</label>
         <input type="text" id="fullname" placeholder="Enter your full name" required/>
@@ -102,7 +148,7 @@ const Login = () => {
 
       <div className="form-group">
         <label htmlFor="signup-email">Email Address</label>
-        <input type="email" id="signup-email" placeholder="Enter your email" required/>
+        <input type="email" id="signup-email" placeholder="Enter your email" required value={email} onChange={(e) => setEmail(e.target.value)} />
       </div>
 
       <div className="form-group">
@@ -112,12 +158,12 @@ const Login = () => {
 
       <div className="form-group">
         <label htmlFor="signup-password">Password</label>
-        <input type="password" id="signup-password" placeholder="Create a password" required/>
+        <input type="password" id="signup-password" placeholder="Create a password" required value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
 
       <div className="form-group">
         <label htmlFor="confirm-password">Confirm Password</label>
-        <input type="password" id="confirm-password" placeholder="Re-enter your password" required/>
+        <input type="password" id="confirm-password" placeholder="Re-enter your password" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
       </div>
 
       <div className="form-options">
@@ -127,7 +173,9 @@ const Login = () => {
         </label>
       </div>
 
-      <button type="submit" className="btn-submit">Create Account</button>
+      <button type="submit" className="btn-submit" disabled={isLoading}>
+        {isLoading ? 'Creating Account...' : 'Create Account'}
+      </button>
 
       <div className="divider"><span>OR</span></div>
 

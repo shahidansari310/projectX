@@ -23,7 +23,7 @@ const PGCard = ({ pg }) => {
             <span className="amount">₹{pg.price.toLocaleString()}</span>
             <span className="period">/month</span>
           </div>
-          <Link to="/pg-details.html" className="btn-view">View Details</Link>
+          <Link to="/pg-details" className="btn-view">View Details</Link>
         </div>
       </div>
     </div>

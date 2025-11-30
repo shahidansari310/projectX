@@ -97,8 +97,8 @@ const OwnerDashboard = () => {
               <span className="icon">📋</span>
               <span>Bookings</span>
             </Link>
-            {/* New Chat Link */}
-            <Link to="/chat.html" className="nav-item">
+            {/* Link Fix */}
+            <Link to="/chat" className="nav-item">
               <span className="icon">💬</span>
               <span>Customer Chat</span>
             </Link>
@@ -106,7 +106,7 @@ const OwnerDashboard = () => {
               <span className="icon">⚙️</span>
               <span>Settings</span>
             </Link>
-            <Link to="#" className="nav-item logout">
+            <Link to="/login" className="nav-item logout">
               <span className="icon">🚪</span>
               <span>Logout</span>
             </Link>
@@ -170,7 +170,7 @@ const OwnerDashboard = () => {
                     <td>
                       <div className="action-buttons">
                         <button className="action-btn edit">✏️</button>
-                        <button className="action-btn view">👁️</button>
+                        <Link to="/pg-details" className="action-btn view">👁️</Link>
                         <button className="action-btn delete">🗑️</button>
                       </div>
                     </td>
@@ -192,7 +192,7 @@ const OwnerDashboard = () => {
                     <td>
                       <div className="action-buttons">
                         <button className="action-btn edit">✏️</button>
-                        <button className="action-btn view">👁️</button>
+                        <Link to="/pg-details" className="action-btn view">👁️</Link>
                         <button className="action-btn delete">🗑️</button>
                       </div>
                     </td>
@@ -214,7 +214,7 @@ const OwnerDashboard = () => {
                     <td>
                       <div className="action-buttons">
                         <button className="action-btn edit">✏️</button>
-                        <button className="action-btn view">👁️</button>
+                        <Link to="/pg-details" className="action-btn view">👁️</Link>
                         <button className="action-btn delete">🗑️</button>
                       </div>
                     </td>

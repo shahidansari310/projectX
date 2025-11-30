@@ -3,6 +3,10 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import '../assets/css/style.css'; 
 import '../assets/css/dashboard.css'; 
+// --- START FIREBASE IMPORTS ---
+import { db } from '../firebase'; 
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'; 
+// --- END FIREBASE IMPORTS ---
 
 const ComplaintBox = () => {
     const [complaint, setComplaint] = useState({
@@ -10,19 +14,41 @@ const ComplaintBox = () => {
         subject: '',
         details: ''
     });
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const handleChange = (e) => {
         setComplaint({ ...complaint, [e.target.id]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // --- BACKEND API CALL PLACEHOLDER ---
-        console.log('Submitting complaint:', complaint);
-        // fetch('/api/complaints', { method: 'POST', body: JSON.stringify(complaint) });
+        setIsLoading(true);
+        setError(null);
         
-        alert('Complaint submitted successfully! The Admin team will review it shortly.');
-        setComplaint({ pgName: '', subject: '', details: '' });
+        try {
+            const complaintsCollection = collection(db, 'complaints');
+            
+            // Prepare the data to be saved in Firestore
+            const newComplaint = {
+                ...complaint,
+                timestamp: serverTimestamp(), // Add server-side timestamp
+                status: 'pending', // Initial status
+                // In a real app, you would add: userId: auth.currentUser.uid
+            };
+
+            // Add the new document to the 'complaints' collection
+            await addDoc(complaintsCollection, newComplaint);
+            
+            console.log('Submitted complaint to Firestore:', newComplaint);
+            alert('Complaint submitted successfully! The Admin team will review it shortly.');
+            setComplaint({ pgName: '', subject: '', details: '' }); // Clear form
+        } catch (err) {
+            console.error('Error submitting complaint:', err);
+            setError('Failed to submit complaint. Please check your connection and try again.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -38,6 +64,8 @@ const ComplaintBox = () => {
 
                 <div className="section-card">
                     <form className="pg-form" onSubmit={handleSubmit}>
+                        {error && <p style={{ color: '#ff4444', marginBottom: '1rem' }}>{error}</p>}
+                        
                         <div className="form-group">
                             <label htmlFor="pgName">PG Name / Property ID (If applicable)</label>
                             <input 
@@ -75,7 +103,14 @@ const ComplaintBox = () => {
                         </div>
 
                         <div className="form-actions" style={{justifyContent: 'flex-start'}}>
-                            <button type="submit" className="btn-primary" style={{width: 'auto'}}>Submit Complaint</button>
+                            <button 
+                                type="submit" 
+                                className="btn-primary" 
+                                style={{width: 'auto'}}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? 'Submitting...' : 'Submit Complaint'}
+                            </button>
                             <button type="button" className="btn-secondary" style={{width: 'auto'}} onClick={() => setComplaint({ pgName: '', subject: '', details: '' })}>Clear Form</button>
                         </div>
                     </form>
